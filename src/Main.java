@@ -151,8 +151,9 @@ public class Main {
         System.out.print("\n");
 
         //se genera un numero r aleatorio entre 0.0 y 1.0
+        Random rand = new Random();
+
         for (int t = 0; t < 20; t++){
-            Random rand = new Random();
             r = rand.nextDouble();
             System.out.print("Random: "+r+"\n");
 
@@ -250,11 +251,12 @@ public class Main {
         Individuo padre1 = new Individuo(individuos[0].getPosX(), individuos[0].getPosY());
         Individuo padre2 = new Individuo(individuos[1].getPosX(), individuos[0].getPosY());
 
-        int p = 2;
+        int posicionPadre2 = 2;
         while (padre1.getPosX() == padre2.getPosX() && padre1.getPosY() == padre2.getPosY()) {
-            padre2 = new Individuo(individuos[p].getPosX(), individuos[p].getPosY());
-            p++;
+            padre2 = new Individuo(individuos[posicionPadre2].getPosX(), individuos[posicionPadre2].getPosY());
+            posicionPadre2++;
         }
+        posicionPadre2--;
 
         double probCruza = 0.9;
 
@@ -264,6 +266,8 @@ public class Main {
         Individuo hijo1 = new Individuo();
         Individuo hijo2 = new Individuo();
 
+        rand = new Random();
+        r = rand.nextDouble();
         if (r <= probCruza) {
             //se cruzan los padres 1 y 2
             hijo1.setPosX(padre1.getPosX());
@@ -281,12 +285,13 @@ public class Main {
 
         //MUTACIÓN
 
-        double probMutacion = 0.1; //en teoría es 1 / nro de genes, en nuestro caso el cromosoma tiene dos genes
+        //en teoría Pm es 1 / nro de genes, en nuestro caso el cromosoma tiene dos genes y sería muy alta
+        double probMutacion = 0.1;
 
         // 0 <= r <= 0.01  ---> se muta
         // 0.01 < r <= 1   ---> no se muta
 
-        Random rand = new Random();
+        rand = new Random();
         r = rand.nextDouble();
         if (r <= probMutacion){
             //acá no se si cuando la probabilidad dice que hay que mutar, se tienen que mutar los dos hijos a la vez o
@@ -303,6 +308,20 @@ public class Main {
             hijo2.setPosX(yhij2);
             hijo2.setPosY(xhij2);
         }
+
+        //REEMPLAZO
+
+        /*
+        Se usa el método de padres débiles, así que hay que calcular el fitness de los padres y de los hijos y quedarse
+        con los dos mejores valores
+         */
+
+        double fitPadre1 = funcFitness(padre1.getPosX(), padre1.getPosY());
+        double fitPadre2 = funcFitness(padre2.getPosX(), padre2.getPosY());
+        double fitHijo1 = funcFitness(hijo1.getPosX(), hijo1.getPosY());
+        double fitHijo2 = funcFitness(hijo2.getPosX(), hijo2.getPosY());
+
+        //TODO: ordenar esos 4 valores de fitness y los dos mejores ingresan a la población, en la posición en la que estaban los padres
 
     }
 
