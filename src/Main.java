@@ -139,14 +139,16 @@ public class Main {
             proporcionRelativa[e] = total;
         }
 
-        System.out.print("AptitudT: "+aptitudT+"\n");
+        System.out.print("\nAptitudT: "+aptitudT+"\n\n");
 
         for (int v = 0; v < 20; v++){
             System.out.print("proporcionIndividuo["+v+"]: "+proporcionIndividuo[v]+"\n");
         }
+        System.out.print("\n");
         for (int w = 0; w < 20; w++){
             System.out.print("proporcionRelativa["+w+"]: "+proporcionRelativa[w]+"\n");
         }
+        System.out.print("\n");
 
         //se genera un numero r aleatorio entre 0.0 y 1.0
         for (int t = 0; t < 20; t++){
@@ -254,9 +256,53 @@ public class Main {
             p++;
         }
 
-        //se cruzan los padres 1 y 2
-        Individuo hijo1 = new Individuo(padre1.getPosX(), padre2.getPosY());
-        Individuo hijo2 = new Individuo(padre2.getPosX(), padre1.getPosY());
+        double probCruza = 0.9;
+
+        // 0 <= r <= 0.9  ---> se cruza
+        // 0.9 < r <= 1   ---> no se cruza
+
+        Individuo hijo1 = new Individuo();
+        Individuo hijo2 = new Individuo();
+
+        if (r <= probCruza) {
+            //se cruzan los padres 1 y 2
+            hijo1.setPosX(padre1.getPosX());
+            hijo1.setPosY(padre2.getPosY());
+            hijo2.setPosX(padre2.getPosX());
+            hijo2.setPosY(padre1.getPosY());
+        }
+        else {
+            //los hijos son iguales a los padres
+            hijo1.setPosX(padre1.getPosX());
+            hijo1.setPosY(padre1.getPosY());
+            hijo2.setPosX(padre2.getPosX());
+            hijo2.setPosY(padre2.getPosY());
+        }
+
+        //MUTACIÓN
+
+        double probMutacion = 0.1; //en teoría es 1 / nro de genes, en nuestro caso el cromosoma tiene dos genes
+
+        // 0 <= r <= 0.01  ---> se muta
+        // 0.01 < r <= 1   ---> no se muta
+
+        Random rand = new Random();
+        r = rand.nextDouble();
+        if (r <= probMutacion){
+            //acá no se si cuando la probabilidad dice que hay que mutar, se tienen que mutar los dos hijos a la vez o
+            //hay que hacer la mutación para cada hijo por separado.
+            int xhij1 = hijo1.getPosX();
+            int yhij1 = hijo1.getPosY();
+
+            hijo1.setPosX(yhij1);
+            hijo1.setPosY(xhij1);
+
+            int xhij2 = hijo2.getPosX();
+            int yhij2 = hijo2.getPosY();
+
+            hijo2.setPosX(yhij2);
+            hijo2.setPosY(xhij2);
+        }
 
     }
 
