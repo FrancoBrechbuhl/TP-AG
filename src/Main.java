@@ -90,28 +90,35 @@ public class Main {
         double[] fitness = new double[20];
         double[] proporcionIndividuo = new double[20];
         double[] proporcionRelativa = new double[20];
+        int[] seleccionados = new int[20];
+        Individuo[] individuos = new Individuo[20];
+
+        individuos[0] = new Individuo(3,5);
+        individuos[1] = new Individuo(3,6);
+        individuos[2] = new Individuo(4,4);
+        individuos[3] = new Individuo(4,5);
+        individuos[4] = new Individuo(4,6);
+        individuos[5] = new Individuo(4,7);
+        individuos[6] = new Individuo(5,4);
+        individuos[7] = new Individuo(5,5);
+        individuos[8] = new Individuo(5,6);
+        individuos[9] = new Individuo(5,7);
+        individuos[10] = new Individuo(5,8);
+        individuos[11] = new Individuo(6,4);
+        individuos[12] = new Individuo(6,5);
+        individuos[13] = new Individuo(6,6);
+        individuos[14] = new Individuo(6,7);
+        individuos[15] = new Individuo(6,8);
+        individuos[16] = new Individuo(7,4);
+        individuos[17] = new Individuo(7,5);
+        individuos[18] = new Individuo(7,6);
+        individuos[19] = new Individuo(7,7);
 
         //cálculo del fitness para cada individuo
-        fitness[0] = funcFitness(3,5);
-        fitness[1] = funcFitness(3,6);
-        fitness[2] = funcFitness(4,4);
-        fitness[3] = funcFitness(4,5);
-        fitness[4] = funcFitness(4,6);
-        fitness[5] = funcFitness(4,7);
-        fitness[6] = funcFitness(5,4);
-        fitness[7] = funcFitness(5,5);
-        fitness[8] = funcFitness(5,6);
-        fitness[9] = funcFitness(5,7);
-        fitness[10] = funcFitness(5,8);
-        fitness[11] = funcFitness(6,4);
-        fitness[12] = funcFitness(6,5);
-        fitness[13] = funcFitness(6,6);
-        fitness[14] = funcFitness(6,7);
-        fitness[15] = funcFitness(6,8);
-        fitness[16] = funcFitness(7,4);
-        fitness[17] = funcFitness(7,5);
-        fitness[18] = funcFitness(7,6);
-        fitness[19] = funcFitness(7,7);
+
+        for (int l = 0; l < 20; l++){
+            fitness[l] = funcFitness(individuos[l].getPosX(), individuos[l].getPosY());
+        }
 
         //cálculo de aptitud total
         for (int c = 0; c < 20; c++){
@@ -146,7 +153,110 @@ public class Main {
             Random rand = new Random();
             r = rand.nextDouble();
             System.out.print("Random: "+r+"\n");
+
+            if (r <= proporcionRelativa[0]){
+                System.out.print("Seleccionado el individuo 1\n");
+                seleccionados[t] = 1;
+            }
+            else if (r <= proporcionRelativa[1]){
+                System.out.print("Seleccionado el individuo 2\n");
+                seleccionados[t] = 2;
+            }
+            else if (r <= proporcionRelativa[2]){
+                System.out.print("Seleccionado el individuo 3\n");
+                seleccionados[t] = 3;
+            }
+            else if (r <= proporcionRelativa[3]){
+                System.out.print("Seleccionado el individuo 4\n");
+                seleccionados[t] = 4;
+            }
+            else if (r <= proporcionRelativa[4]){
+                System.out.print("Seleccionado el individuo 5\n");
+                seleccionados[t] = 5;
+            }
+            else if (r <= proporcionRelativa[5]){
+                System.out.print("Seleccionado el individuo 6\n");
+                seleccionados[t] = 6;
+            }
+            else if (r <= proporcionRelativa[6]){
+                System.out.print("Seleccionado el individuo 7\n");
+                seleccionados[t] = 7;
+            }
+            else if (r <= proporcionRelativa[7]){
+                System.out.print("Seleccionado el individuo 8\n");
+                seleccionados[t] = 8;
+            }
+            else if (r <= proporcionRelativa[8]){
+                System.out.print("Seleccionado el individuo 9\n");
+                seleccionados[t] = 9;
+            }
+            else if (r <= proporcionRelativa[9]){
+                System.out.print("Seleccionado el individuo 10\n");
+                seleccionados[t] = 10;
+            }
+            else if (r <= proporcionRelativa[10]){
+                System.out.print("Seleccionado el individuo 11\n");
+                seleccionados[t] = 11;
+            }
+            else if (r <= proporcionRelativa[11]){
+                System.out.print("Seleccionado el individuo 12\n");
+                seleccionados[t] = 12;
+            }
+            else if (r <= proporcionRelativa[12]){
+                System.out.print("Seleccionado el individuo 13\n");
+                seleccionados[t] = 13;
+            }
+            else if (r <= proporcionRelativa[13]){
+                System.out.print("Seleccionado el individuo 14\n");
+                seleccionados[t] = 14;
+            }
+            else if (r <= proporcionRelativa[14]){
+                System.out.print("Seleccionado el individuo 15\n");
+                seleccionados[t] = 15;
+            }
+            else if (r <= proporcionRelativa[15]){
+                System.out.print("Seleccionado el individuo 16\n");
+                seleccionados[t] = 16;
+            }
+            else if (r <= proporcionRelativa[16]){
+                System.out.print("Seleccionado el individuo 17\n");
+                seleccionados[t] = 17;
+            }
+            else if (r <= proporcionRelativa[17]){
+                System.out.print("Seleccionado el individuo 18\n");
+                seleccionados[t] = 18;
+            }
+            else if (r <= proporcionRelativa[18]){
+                System.out.print("Seleccionado el individuo 19\n");
+                seleccionados[t] = 19;
+            }
+            else if (r <= proporcionRelativa[19]){
+                System.out.print("Seleccionado el individuo 20\n");
+                seleccionados[t] = 20;
+            }
         }
+
+        //CRUZA
+
+        /*
+        Se cruzan el individuo 1 con el 2 del vector seleccionados[], según el orden que se realizó en el proceso de
+        selección. Hay que controlar porque como es ruleta, 1 y 2 podrían ser el mismo individuo, si son se debe cruzar
+        1 y 3, o 1 y 4, etc.
+         */
+
+        //se chequea que los padres no sean iguales y se los inicializa
+        Individuo padre1 = new Individuo(individuos[0].getPosX(), individuos[0].getPosY());
+        Individuo padre2 = new Individuo(individuos[1].getPosX(), individuos[0].getPosY());
+
+        int p = 2;
+        while (padre1.getPosX() == padre2.getPosX() && padre1.getPosY() == padre2.getPosY()) {
+            padre2 = new Individuo(individuos[p].getPosX(), individuos[p].getPosY());
+            p++;
+        }
+
+        //se cruzan los padres 1 y 2
+        Individuo hijo1 = new Individuo(padre1.getPosX(), padre2.getPosY());
+        Individuo hijo2 = new Individuo(padre2.getPosX(), padre1.getPosY());
 
     }
 
