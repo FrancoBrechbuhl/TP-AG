@@ -14,83 +14,20 @@ public class Main {
             {0, 6, 2, 8, 7, 1, 2, 1, 5, 3}};
 
     public static void main(String[] args) {
-        int rangos[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-        //[1601;1800], [1801;2100], [2001;2200], [2201;2400], [2401;2600], [2601;2800], [2801;3000], [3001;3200], [3201;3400]
-        for(int xfs = 1; xfs <= 10; xfs++) {
-            for(int yfs = 1; yfs <= 10; yfs++) {
-                double costo = 0;
-
-                costo = funcFitness(xfs, yfs);
-
-                /*
-                Esto es para ver cuales son los 20 mejores individuos para hacer ruleta, de forma que no haya
-                mucha diferencia entre los pesos
-
-                */
-                if (costo <= 1800){
-                    rangos[0]++;
-                    System.out.print("La posición: [ "+xfs+" ; "+yfs+" ] es candidata y tiene un costo de "+costo+"\n");
-                }
-                else if (costo <= 2000){
-                    rangos[1]++;
-                    System.out.print("La posición: [ "+xfs+" ; "+yfs+" ] tiene un costo de "+costo+"\n");
-                }
-                //comentado porque ya no se necesita
-                /*
-                else if (costo <= 2200){
-                    rangos[2]++;
-                }
-                else if (costo <= 2400){
-                    rangos[3]++;
-                }
-                else if (costo <= 2600){
-                    rangos[4]++;
-                }
-                else if (costo <= 2800){
-                    rangos[5]++;
-                }
-                else if (costo <= 3000){
-                    rangos[6]++;
-                }
-                else if (costo <= 3200){
-                    rangos[7]++;
-                }
-                else if (costo <= 3400){
-                    rangos[8]++;
-                }
-                System.out.print("El costo de la posición "+xfs+", "+yfs+" es: "+ costo+"\n");
-                 */
-            }
-        }
         /*
-        System.out.print("En el rango [1601;1800] hay "+rangos[0]+" valores\n");
-        System.out.print("En el rango [1801;2000] hay "+rangos[1]+" valores\n");
-        System.out.print("En el rango [2001;2200] hay "+rangos[2]+" valores\n");
-        System.out.print("En el rango [2201;2400] hay "+rangos[3]+" valores\n");
-        System.out.print("En el rango [2401;2600] hay "+rangos[4]+" valores\n");
-        System.out.print("En el rango [2601;2800] hay "+rangos[5]+" valores\n");
-        System.out.print("En el rango [2801;3000] hay "+rangos[6]+" valores\n");
-        System.out.print("En el rango [3001;3200] hay "+rangos[7]+" valores\n");
-        System.out.print("En el rango [3201;3400] hay "+rangos[8]+" valores\n");
-         */
-
-        /*
-        Los 20 individuos que se van a usar son:
+        Los 20 mejores individuos que se van a usar son:
         [3;5]   [3;6]   [4;4]   [4;5]   [4;6]
         [4;7]   [5;4]   [5;5]   [5;6]   [5;7]
         [5;8]   [6;4]   [6;5]   [6;6]   [6;7]
         [6;8]   [7;4]   [7;5]   [7;6]   [7;7]
 
+        se itera para conseguir las 50 generaciones, cuando termina se considera que el primer individuo del array es
+        la mejor solución
+
          */
 
-        //SELECCIÓN
+        //se inicializan los individuos
 
-        double r = 0;
-        double aptitudT = 0;
-        double[] fitness = new double[20];
-        double[] proporcionIndividuo = new double[20];
-        double[] proporcionRelativa = new double[20];
-        int[] poblacion = new int[20];
         Individuo[] individuos = new Individuo[20];
 
         individuos[0] = new Individuo(3,5);
@@ -114,229 +51,253 @@ public class Main {
         individuos[18] = new Individuo(7,6);
         individuos[19] = new Individuo(7,7);
 
-        //cálculo del fitness para cada individuo
+        double r = 0;
+        double aptitudT = 0;
+        double[] fitness = new double[20];
+        double[] proporcionIndividuo = new double[20];
+        double[] proporcionRelativa = new double[20];
+        int[] poblacion = new int[20];
 
-        for (int l = 0; l < 20; l++){
-            fitness[l] = funcFitness(individuos[l].getPosX(), individuos[l].getPosY());
-        }
+        for (int gen = 0; gen < 50; gen++){
+            //SELECCIÓN
 
-        //cálculo de aptitud total
-        for (int c = 0; c < 20; c++){
-            aptitudT = aptitudT + fitness[c];
-        }
+            r = 0;
+            aptitudT = 0;
 
-        //cálculo de la proporción que ocupa cada individuo en la ruleta
-        for (int d = 0; d < 20; d++){
-            proporcionIndividuo[d] = fitness[d] / aptitudT;
-        }
+            //cálculo del fitness para cada individuo
 
-        //cálculo de la proporción acumulada
-        for (int e = 0; e < 20; e++){
-            double total = 0;
-            for (int f = 0; f <= e; f++){
-                total = total + proporcionIndividuo[f];
+            for (int l = 0; l < 20; l++){
+                fitness[l] = 0;
+                fitness[l] = funcFitness(individuos[l].getPosX(), individuos[l].getPosY());
             }
-            proporcionRelativa[e] = total;
-        }
 
-        System.out.print("\nAptitudT: "+aptitudT+"\n\n");
+            //cálculo de aptitud total
+            for (int c = 0; c < 20; c++){
+                aptitudT = aptitudT + fitness[c];
+            }
 
-        for (int v = 0; v < 20; v++){
-            System.out.print("proporcionIndividuo["+v+"]: "+proporcionIndividuo[v]+"\n");
-        }
-        System.out.print("\n");
-        for (int w = 0; w < 20; w++){
-            System.out.print("proporcionRelativa["+w+"]: "+proporcionRelativa[w]+"\n");
-        }
-        System.out.print("\n");
+            //cálculo de la proporción que ocupa cada individuo en la ruleta
+            for (int d = 0; d < 20; d++){
+                proporcionIndividuo[d] = 0;
+                proporcionIndividuo[d] = fitness[d] / aptitudT;
+            }
 
-        //se genera un numero r aleatorio entre 0.0 y 1.0
-        Random rand = new Random();
+            //cálculo de la proporción acumulada
+            for (int e = 0; e < 20; e++){
+                double total = 0;
+                for (int f = 0; f <= e; f++){
+                    total = total + proporcionIndividuo[f];
+                }
+                proporcionRelativa[e] = 0;
+                proporcionRelativa[e] = total;
+            }
 
-        for (int t = 0; t < 20; t++){
+            System.out.print("\n\nAptitudT: "+aptitudT+"\n\n");
+
+            /*
+            for (int v = 0; v < 20; v++){
+                System.out.print("proporcionIndividuo["+v+"]: "+proporcionIndividuo[v]+"\n");
+            }
+            System.out.print("\n");
+            for (int w = 0; w < 20; w++){
+                System.out.print("proporcionRelativa["+w+"]: "+proporcionRelativa[w]+"\n");
+            }
+
+             */
+            System.out.print("\n");
+
+            //se genera un numero r aleatorio entre 0.0 y 1.0
+            Random rand = new Random();
+
+            for (int t = 0; t < 20; t++){
+                r = rand.nextDouble();
+                //System.out.print("Random: "+r+"\n");
+
+                if (r <= proporcionRelativa[0]){
+                    System.out.print("Seleccionado el individuo 1\n");
+                    poblacion[t] = 1;
+                }
+                else if (r <= proporcionRelativa[1]){
+                    System.out.print("Seleccionado el individuo 2\n");
+                    poblacion[t] = 2;
+                }
+                else if (r <= proporcionRelativa[2]){
+                    System.out.print("Seleccionado el individuo 3\n");
+                    poblacion[t] = 3;
+                }
+                else if (r <= proporcionRelativa[3]){
+                    System.out.print("Seleccionado el individuo 4\n");
+                    poblacion[t] = 4;
+                }
+                else if (r <= proporcionRelativa[4]){
+                    System.out.print("Seleccionado el individuo 5\n");
+                    poblacion[t] = 5;
+                }
+                else if (r <= proporcionRelativa[5]){
+                    System.out.print("Seleccionado el individuo 6\n");
+                    poblacion[t] = 6;
+                }
+                else if (r <= proporcionRelativa[6]){
+                    System.out.print("Seleccionado el individuo 7\n");
+                    poblacion[t] = 7;
+                }
+                else if (r <= proporcionRelativa[7]){
+                    System.out.print("Seleccionado el individuo 8\n");
+                    poblacion[t] = 8;
+                }
+                else if (r <= proporcionRelativa[8]){
+                    System.out.print("Seleccionado el individuo 9\n");
+                    poblacion[t] = 9;
+                }
+                else if (r <= proporcionRelativa[9]){
+                    System.out.print("Seleccionado el individuo 10\n");
+                    poblacion[t] = 10;
+                }
+                else if (r <= proporcionRelativa[10]){
+                    System.out.print("Seleccionado el individuo 11\n");
+                    poblacion[t] = 11;
+                }
+                else if (r <= proporcionRelativa[11]){
+                    System.out.print("Seleccionado el individuo 12\n");
+                    poblacion[t] = 12;
+                }
+                else if (r <= proporcionRelativa[12]){
+                    System.out.print("Seleccionado el individuo 13\n");
+                    poblacion[t] = 13;
+                }
+                else if (r <= proporcionRelativa[13]){
+                    System.out.print("Seleccionado el individuo 14\n");
+                    poblacion[t] = 14;
+                }
+                else if (r <= proporcionRelativa[14]){
+                    System.out.print("Seleccionado el individuo 15\n");
+                    poblacion[t] = 15;
+                }
+                else if (r <= proporcionRelativa[15]){
+                    System.out.print("Seleccionado el individuo 16\n");
+                    poblacion[t] = 16;
+                }
+                else if (r <= proporcionRelativa[16]){
+                    System.out.print("Seleccionado el individuo 17\n");
+                    poblacion[t] = 17;
+                }
+                else if (r <= proporcionRelativa[17]){
+                    System.out.print("Seleccionado el individuo 18\n");
+                    poblacion[t] = 18;
+                }
+                else if (r <= proporcionRelativa[18]){
+                    System.out.print("Seleccionado el individuo 19\n");
+                    poblacion[t] = 19;
+                }
+                else if (r <= proporcionRelativa[19]){
+                    System.out.print("Seleccionado el individuo 20\n");
+                    poblacion[t] = 20;
+                }
+            }
+
+            //CRUZA
+
+            /*
+            Se cruzan el individuo 1 con el 2 del vector seleccionados[], según el orden que se realizó en el proceso de
+            selección. Hay que controlar porque como es ruleta, 1 y 2 podrían ser el mismo individuo, si son se debe cruzar
+            1 y 3, o 1 y 4, etc.
+             */
+
+            //se chequea que los padres no sean iguales y se los inicializa
+            Individuo padre1 = new Individuo(individuos[poblacion[0]].getPosX(), individuos[poblacion[0]].getPosY());
+            Individuo padre2 = new Individuo(individuos[poblacion[1]].getPosX(), individuos[poblacion[1]].getPosY());
+
+            int posicionPadre2 = 2;
+            while (padre1.getPosX() == padre2.getPosX() && padre1.getPosY() == padre2.getPosY()) {
+                padre2 = new Individuo(individuos[poblacion[posicionPadre2]].getPosX(), individuos[poblacion[posicionPadre2]].getPosY());
+                posicionPadre2++;
+            }
+            posicionPadre2--;
+
+            System.out.print("\nEl padre 1 es: [ "+padre1.getPosX()+" ; "+padre1.getPosY()+ " ]\n");
+            System.out.print("El padre 2 es: [ "+padre2.getPosX()+" ; "+padre2.getPosY()+ " ]\n");
+
+            double probCruza = 0.9;
+
+            // 0 <= r <= 0.9  ---> se cruza
+            // 0.9 < r <= 1   ---> no se cruza
+
+            Individuo hijo1 = new Individuo();
+            Individuo hijo2 = new Individuo();
+
+            rand = new Random();
             r = rand.nextDouble();
-            System.out.print("Random: "+r+"\n");
+            if (r <= probCruza) {
+                //se cruzan los padres 1 y 2
+                hijo1.setPosX(padre1.getPosX());
+                hijo1.setPosY(padre2.getPosY());
+                hijo2.setPosX(padre2.getPosX());
+                hijo2.setPosY(padre1.getPosY());
+            }
+            else {
+                //los hijos son iguales a los padres
+                hijo1.setPosX(padre1.getPosX());
+                hijo1.setPosY(padre1.getPosY());
+                hijo2.setPosX(padre2.getPosX());
+                hijo2.setPosY(padre2.getPosY());
+            }
 
-            if (r <= proporcionRelativa[0]){
-                System.out.print("Seleccionado el individuo 1\n");
-                poblacion[t] = 1;
+            System.out.print("\nEl hijo 1 es: [ "+hijo1.getPosX()+" ; "+hijo1.getPosY()+" ]\n");
+            System.out.print("El hijo 2 es: [ "+hijo2.getPosX()+" ; "+hijo2.getPosY()+" ]\n");
+
+            //MUTACIÓN
+
+            //en teoría Pm es 1 / nro de genes, en nuestro caso el cromosoma tiene dos genes y sería muy alta
+            double probMutacion = 0.1;
+
+            // 0 <= r <= 0.01  ---> se muta
+            // 0.01 < r <= 1   ---> no se muta
+
+            //mutación hijo1
+            rand = new Random();
+            r = rand.nextDouble();
+            if (r <= probMutacion){
+                int xhij1 = hijo1.getPosX();
+                int yhij1 = hijo1.getPosY();
+
+                hijo1.setPosX(yhij1);
+                hijo1.setPosY(xhij1);
             }
-            else if (r <= proporcionRelativa[1]){
-                System.out.print("Seleccionado el individuo 2\n");
-                poblacion[t] = 2;
+
+            //mutación hijo2
+            rand = new Random();
+            r = rand.nextDouble();
+            if (r <= probMutacion){
+                int xhij2 = hijo2.getPosX();
+                int yhij2 = hijo2.getPosY();
+
+                hijo2.setPosX(yhij2);
+                hijo2.setPosY(xhij2);
             }
-            else if (r <= proporcionRelativa[2]){
-                System.out.print("Seleccionado el individuo 3\n");
-                poblacion[t] = 3;
-            }
-            else if (r <= proporcionRelativa[3]){
-                System.out.print("Seleccionado el individuo 4\n");
-                poblacion[t] = 4;
-            }
-            else if (r <= proporcionRelativa[4]){
-                System.out.print("Seleccionado el individuo 5\n");
-                poblacion[t] = 5;
-            }
-            else if (r <= proporcionRelativa[5]){
-                System.out.print("Seleccionado el individuo 6\n");
-                poblacion[t] = 6;
-            }
-            else if (r <= proporcionRelativa[6]){
-                System.out.print("Seleccionado el individuo 7\n");
-                poblacion[t] = 7;
-            }
-            else if (r <= proporcionRelativa[7]){
-                System.out.print("Seleccionado el individuo 8\n");
-                poblacion[t] = 8;
-            }
-            else if (r <= proporcionRelativa[8]){
-                System.out.print("Seleccionado el individuo 9\n");
-                poblacion[t] = 9;
-            }
-            else if (r <= proporcionRelativa[9]){
-                System.out.print("Seleccionado el individuo 10\n");
-                poblacion[t] = 10;
-            }
-            else if (r <= proporcionRelativa[10]){
-                System.out.print("Seleccionado el individuo 11\n");
-                poblacion[t] = 11;
-            }
-            else if (r <= proporcionRelativa[11]){
-                System.out.print("Seleccionado el individuo 12\n");
-                poblacion[t] = 12;
-            }
-            else if (r <= proporcionRelativa[12]){
-                System.out.print("Seleccionado el individuo 13\n");
-                poblacion[t] = 13;
-            }
-            else if (r <= proporcionRelativa[13]){
-                System.out.print("Seleccionado el individuo 14\n");
-                poblacion[t] = 14;
-            }
-            else if (r <= proporcionRelativa[14]){
-                System.out.print("Seleccionado el individuo 15\n");
-                poblacion[t] = 15;
-            }
-            else if (r <= proporcionRelativa[15]){
-                System.out.print("Seleccionado el individuo 16\n");
-                poblacion[t] = 16;
-            }
-            else if (r <= proporcionRelativa[16]){
-                System.out.print("Seleccionado el individuo 17\n");
-                poblacion[t] = 17;
-            }
-            else if (r <= proporcionRelativa[17]){
-                System.out.print("Seleccionado el individuo 18\n");
-                poblacion[t] = 18;
-            }
-            else if (r <= proporcionRelativa[18]){
-                System.out.print("Seleccionado el individuo 19\n");
-                poblacion[t] = 19;
-            }
-            else if (r <= proporcionRelativa[19]){
-                System.out.print("Seleccionado el individuo 20\n");
-                poblacion[t] = 20;
-            }
+
+            System.out.print("\nEl hijo 1 mutado es: [ "+hijo1.getPosX()+" ; "+hijo1.getPosY()+" ]\n");
+            System.out.print("El hijo 2 mutado es: [ "+hijo2.getPosX()+" ; "+hijo2.getPosY()+" ]\n");
+
+            //REEMPLAZO
+
+            /*
+            Se usa el método de padres débiles, así que hay que calcular el fitness de los padres y de los hijos y quedarse
+            con los dos mejores valores
+             */
+
+            double fitPadre1 = funcFitness(padre1.getPosX(), padre1.getPosY());
+            double fitPadre2 = funcFitness(padre2.getPosX(), padre2.getPosY());
+            double fitHijo1 = funcFitness(hijo1.getPosX(), hijo1.getPosY());
+            double fitHijo2 = funcFitness(hijo2.getPosX(), hijo2.getPosY());
+
+            double[] fitPadresHijos = {fitPadre1, fitPadre2, fitHijo1, fitHijo2};
+            int[] individuosOrdenados = ordenarIndByFitness(fitPadresHijos);
+
+            //intercambiar los individuos candidatos
+
+            poblacion[0] = individuosOrdenados[0];
+            poblacion[posicionPadre2] = individuosOrdenados[1];
         }
-
-        //CRUZA
-
-        /*
-        Se cruzan el individuo 1 con el 2 del vector seleccionados[], según el orden que se realizó en el proceso de
-        selección. Hay que controlar porque como es ruleta, 1 y 2 podrían ser el mismo individuo, si son se debe cruzar
-        1 y 3, o 1 y 4, etc.
-         */
-
-        //se chequea que los padres no sean iguales y se los inicializa
-        Individuo padre1 = new Individuo(individuos[0].getPosX(), individuos[0].getPosY());
-        Individuo padre2 = new Individuo(individuos[1].getPosX(), individuos[0].getPosY());
-
-        int posicionPadre2 = 2;
-        while (padre1.getPosX() == padre2.getPosX() && padre1.getPosY() == padre2.getPosY()) {
-            padre2 = new Individuo(individuos[posicionPadre2].getPosX(), individuos[posicionPadre2].getPosY());
-            posicionPadre2++;
-        }
-        posicionPadre2--;
-
-        System.out.print("\nEl padre 1 es: [ "+padre1.getPosX()+" ; "+padre1.getPosY()+ " ]\n");
-        System.out.print("El padre 2 es: [ "+padre2.getPosX()+" ; "+padre2.getPosY()+ " ]\n");
-
-        double probCruza = 0.9;
-
-        // 0 <= r <= 0.9  ---> se cruza
-        // 0.9 < r <= 1   ---> no se cruza
-
-        Individuo hijo1 = new Individuo();
-        Individuo hijo2 = new Individuo();
-
-        rand = new Random();
-        r = rand.nextDouble();
-        if (r <= probCruza) {
-            //se cruzan los padres 1 y 2
-            hijo1.setPosX(padre1.getPosX());
-            hijo1.setPosY(padre2.getPosY());
-            hijo2.setPosX(padre2.getPosX());
-            hijo2.setPosY(padre1.getPosY());
-        }
-        else {
-            //los hijos son iguales a los padres
-            hijo1.setPosX(padre1.getPosX());
-            hijo1.setPosY(padre1.getPosY());
-            hijo2.setPosX(padre2.getPosX());
-            hijo2.setPosY(padre2.getPosY());
-        }
-
-        System.out.print("\nEl hijo 1 es: [ "+hijo1.getPosX()+" ; "+hijo1.getPosY()+" ]\n");
-        System.out.print("El hijo 2 es: [ "+hijo2.getPosX()+" ; "+hijo2.getPosY()+" ]\n");
-
-        //MUTACIÓN
-
-        //en teoría Pm es 1 / nro de genes, en nuestro caso el cromosoma tiene dos genes y sería muy alta
-        double probMutacion = 0.1;
-
-        // 0 <= r <= 0.01  ---> se muta
-        // 0.01 < r <= 1   ---> no se muta
-
-        rand = new Random();
-        r = rand.nextDouble();
-        if (r <= probMutacion){
-            //acá no se si cuando la probabilidad dice que hay que mutar, se tienen que mutar los dos hijos a la vez o
-            //hay que hacer la mutación para cada hijo por separado.
-            int xhij1 = hijo1.getPosX();
-            int yhij1 = hijo1.getPosY();
-
-            hijo1.setPosX(yhij1);
-            hijo1.setPosY(xhij1);
-
-            int xhij2 = hijo2.getPosX();
-            int yhij2 = hijo2.getPosY();
-
-            hijo2.setPosX(yhij2);
-            hijo2.setPosY(xhij2);
-        }
-
-        System.out.print("\nEl hijo 1 mutado es: [ "+hijo1.getPosX()+" ; "+hijo1.getPosY()+" ]\n");
-        System.out.print("El hijo 2 mutado es: [ "+hijo2.getPosX()+" ; "+hijo2.getPosY()+" ]\n");
-
-        //REEMPLAZO
-
-        /*
-        Se usa el método de padres débiles, así que hay que calcular el fitness de los padres y de los hijos y quedarse
-        con los dos mejores valores
-         */
-
-        double fitPadre1 = funcFitness(padre1.getPosX(), padre1.getPosY());
-        double fitPadre2 = funcFitness(padre2.getPosX(), padre2.getPosY());
-        double fitHijo1 = funcFitness(hijo1.getPosX(), hijo1.getPosY());
-        double fitHijo2 = funcFitness(hijo2.getPosX(), hijo2.getPosY());
-
-        double[] fitPadresHijos = {fitPadre1, fitPadre2, fitHijo1, fitHijo2};
-        int[] individuosOrdenados = ordenarIndByFitness(fitPadresHijos);
-
-        //intercambiar los individuos candidatos
-
-        poblacion[0] = individuosOrdenados[0];
-        poblacion[posicionPadre2] = individuosOrdenados[1];
     }
 
     public static double funcFitness(int xfs, int yfs){
