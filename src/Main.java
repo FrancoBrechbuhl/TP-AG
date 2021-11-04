@@ -92,9 +92,9 @@ public class Main {
                 proporcionRelativa[e] = total;
             }
 
+            /*
             System.out.print("\n\nAptitudT: "+aptitudT+"\n\n");
 
-            /*
             for (int v = 0; v < 20; v++){
                 System.out.print("proporcionIndividuo["+v+"]: "+proporcionIndividuo[v]+"\n");
             }
@@ -204,12 +204,12 @@ public class Main {
              */
 
             //se chequea que los padres no sean iguales y se los inicializa
-            Individuo padre1 = new Individuo(individuos[poblacion[0]].getPosX(), individuos[poblacion[0]].getPosY());
-            Individuo padre2 = new Individuo(individuos[poblacion[1]].getPosX(), individuos[poblacion[1]].getPosY());
+            Individuo padre1 = new Individuo(individuos[poblacion[0]-1].getPosX(), individuos[poblacion[0]-1].getPosY());
+            Individuo padre2 = new Individuo(individuos[poblacion[1]-1].getPosX(), individuos[poblacion[1]-1].getPosY());
 
             int posicionPadre2 = 2;
             while (padre1.getPosX() == padre2.getPosX() && padre1.getPosY() == padre2.getPosY()) {
-                padre2 = new Individuo(individuos[poblacion[posicionPadre2]].getPosX(), individuos[poblacion[posicionPadre2]].getPosY());
+                padre2 = new Individuo(individuos[poblacion[posicionPadre2]-1].getPosX(), individuos[poblacion[posicionPadre2]-1].getPosY());
                 posicionPadre2++;
             }
             posicionPadre2--;
