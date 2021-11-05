@@ -16,10 +16,10 @@ public class Main {
     public static void main(String[] args) {
         /*
         Los 20 individuos que se van a usar inicialmente son:
-        [3;5]   [3;6]   [4;4]   [4;5]   [4;6]
-        [4;7]   [5;4]   [5;5]   [5;6]   [5;7]
-        [5;8]   [6;4]   [6;5]   [6;6]   [6;7]
-        [6;8]   [7;4]   [7;5]   [7;6]   [7;7]
+        [1;2]    [1;7]   [2;1]   [2;4]    [3;8]
+        [3;10]   [4;3]   [4;6]   [5;5]    [5;7]
+        [6;2]    [6;9]   [7;5]   [7;8]    [8;1]
+        [8;10]   [9;4]   [9;7]   [10;3]   [10;3]
 
         se itera para conseguir las 50 generaciones, cuando termina se itera sobre los individuos que quedan en la
         población y el que tenga mejor fitness es la mejor solución (la mejor solución es [ 5 ; 6 ] con fitness de 1685.7171
@@ -27,32 +27,7 @@ public class Main {
          */
 
         //se inicializan los individuos
-
         Individuo[] individuos = new Individuo[20];
-
-        /*
-        individuos[0] = new Individuo(3,5);
-        individuos[1] = new Individuo(3,6);
-        individuos[2] = new Individuo(4,4);
-        individuos[3] = new Individuo(4,5);
-        individuos[4] = new Individuo(4,6);
-        individuos[5] = new Individuo(4,7);
-        individuos[6] = new Individuo(5,4);
-        individuos[7] = new Individuo(5,5);
-        individuos[8] = new Individuo(5,6);
-        individuos[9] = new Individuo(5,7);
-        individuos[10] = new Individuo(5,8);
-        individuos[11] = new Individuo(6,4);
-        individuos[12] = new Individuo(6,5);
-        individuos[13] = new Individuo(6,6);
-        individuos[14] = new Individuo(6,7);
-        individuos[15] = new Individuo(6,8);
-        individuos[16] = new Individuo(7,4);
-        individuos[17] = new Individuo(7,5);
-        individuos[18] = new Individuo(7,6);
-        individuos[19] = new Individuo(7,7);
-
-         */
 
         individuos[0] = new Individuo(1,2);
         individuos[1] = new Individuo(1,7);
@@ -82,7 +57,7 @@ public class Main {
         double[] proporcionRelativa = new double[20];
         int[] reproductores = new int[20];
 
-        for (int gen = 0; gen < 10; gen++){
+        for (int gen = 0; gen < 20; gen++){
             //SELECCIÓN
 
             System.out.print("\nGeneración "+gen+":\n\n");
@@ -94,11 +69,6 @@ public class Main {
 
             for (int l = 0; l < 20; l++){
                 fitness[l] = 0;
-                /*
-                chequear si esto anda bien, es porque si se devuelve la funcion objetivo tal como está en la ruleta se
-                favorece a los fitness más grandes, y son los que no queremos nosotros. Lo que se busca es el fitness
-                más pequeño.
-                 */
                 fitness[l] = funcFitness(individuos[l].getPosX(), individuos[l].getPosY());
                 System.out.print("Fitness de individuo [ "+individuos[l].getPosX()+" ; "+individuos[l].getPosY()+" ]: "+fitness[l]+"\n");
             }
@@ -126,24 +96,11 @@ public class Main {
 
             System.out.print("\n\nAptitudT: "+aptitudT+"\n\n");
 
-            /*
-            for (int v = 0; v < 20; v++){
-                System.out.print("proporcionIndividuo["+v+"]: "+proporcionIndividuo[v]+"\n");
-            }
-            System.out.print("\n");
-            for (int w = 0; w < 20; w++){
-                System.out.print("proporcionRelativa["+w+"]: "+proporcionRelativa[w]+"\n");
-            }
-
-             */
-            System.out.print("\n");
-
             //se genera un numero r aleatorio entre 0.0 y 1.0
             Random rand = new Random();
 
             for (int t = 0; t < 20; t++){
                 r = rand.nextDouble();
-                //System.out.print("Random: "+r+"\n");
 
                 if (r <= proporcionRelativa[0]){
                     System.out.print("Seleccionado el individuo 0\n");
@@ -244,8 +201,8 @@ public class Main {
 
                 double probCruza = 0.9;
 
-                // 0 <= r <= 0.9  ---> se cruza
-                // 0.9 < r <= 1   ---> no se cruza
+                // 0 <= r <= probCruza  ---> se cruza
+                // probCruza < r <= 1   ---> no se cruza
 
                 Individuo hijo1 = new Individuo();
                 Individuo hijo2 = new Individuo();
@@ -275,8 +232,8 @@ public class Main {
                 //en teoría Pm es 1 / nro de genes, en nuestro caso el cromosoma tiene dos genes y sería muy alta
                 double probMutacion = 0.1;
 
-                // 0 <= r <= 0.01  ---> se muta
-                // 0.01 < r <= 1   ---> no se muta
+                // 0 <= r <= probMutacion  ---> se muta
+                // probMutacion < r <= 1   ---> no se muta
 
                 //mutación hijo1
                 rand = new Random();
@@ -319,10 +276,17 @@ public class Main {
             }
         }
 
+        Individuo mejorSolucion = individuos[0];
+
         System.out.print("\nLos individuos finales son:\n");
         for (int g = 0; g < 10; g++){
             System.out.print("\nIndividuo [ "+individuos[g].getPosX()+" ; "+individuos[g].getPosY()+" ] con fitness de "+(5000 - funcFitness(individuos[g].getPosX(), individuos[g].getPosY())));
+            if (funcFitness(individuos[g].getPosX(), individuos[g].getPosY()) > funcFitness(mejorSolucion.getPosX(), mejorSolucion.getPosY())){
+                mejorSolucion = individuos[g];
+            }
         }
+
+        System.out.print("\n\nLa mejor ubicación para colocar la estación de bomberos es en la manzana [ "+mejorSolucion.getPosX()+" ; "+mejorSolucion.getPosY()+" ] con una distancia promedio de "+(5000 - funcFitness(mejorSolucion.getPosX(), mejorSolucion.getPosY())));
     }
 
     public static double funcFitness(int xfs, int yfs){
@@ -332,6 +296,10 @@ public class Main {
                 costo = costo + cantIncendios[i - 1][j - 1] * Math.sqrt(Math.pow((i - xfs), 2) + Math.pow((j - yfs), 2));
             }
         }
+        /*
+        si se devuelve la funcion objetivo tal como está en la ruleta se favorece a los fitness más grandes,
+        y son los que no queremos nosotros. Lo que se busca es el fitness más pequeño.
+         */
         return 5000 - costo;
     }
 
