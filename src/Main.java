@@ -29,6 +29,8 @@ public class Main {
         //se inicializan los individuos
         Individuo[] individuos = new Individuo[20];
 
+        //Individuos dispersos, tiende a encontrar la solución óptima que está en [ 6 ; 6 ]
+
         individuos[0] = new Individuo(1,2);
         individuos[1] = new Individuo(1,7);
         individuos[2] = new Individuo(2,1);
@@ -49,6 +51,58 @@ public class Main {
         individuos[17] = new Individuo(9,7);
         individuos[18] = new Individuo(10,3);
         individuos[19] = new Individuo(10,6);
+
+        //Individuos de la parte inferior derecha del mapa, tiende a encontrar la solución [ 6 ; 6 ], muy buena pero no
+        //es la mejor
+        /*
+
+        individuos[0] = new Individuo(7,7);
+        individuos[1] = new Individuo(9,9);
+        individuos[2] = new Individuo(10,10);
+        individuos[3] = new Individuo(6,8);
+        individuos[4] = new Individuo(7,9);
+        individuos[5] = new Individuo(6,10);
+        individuos[6] = new Individuo(10,6);
+        individuos[7] = new Individuo(6,9);
+        individuos[8] = new Individuo(8,6);
+        individuos[9] = new Individuo(9,7);
+        individuos[10] = new Individuo(6,7);
+        individuos[11] = new Individuo(8,7);
+        individuos[12] = new Individuo(7,5);
+        individuos[13] = new Individuo(8,10);
+        individuos[14] = new Individuo(9,8);
+        individuos[15] = new Individuo(7,8);
+        individuos[16] = new Individuo(9,6);
+        individuos[17] = new Individuo(8,9);
+        individuos[18] = new Individuo(9,7);
+        individuos[19] = new Individuo(10,8);
+         */
+
+        //Individuos en la parte superior izquierda del mapa, tiende a encontrar la solución [ 5 ; 5 ], muy buena pero
+        //no es la mejor
+        /*
+
+        individuos[0] = new Individuo(1,1);
+        individuos[1] = new Individuo(4,2);
+        individuos[2] = new Individuo(3,1);
+        individuos[3] = new Individuo(2,3);
+        individuos[4] = new Individuo(5,4);
+        individuos[5] = new Individuo(2,2);
+        individuos[6] = new Individuo(4,1);
+        individuos[7] = new Individuo(1,5);
+        individuos[8] = new Individuo(2,4);
+        individuos[9] = new Individuo(3,3);
+        individuos[10] = new Individuo(1,4);
+        individuos[11] = new Individuo(4,4);
+        individuos[12] = new Individuo(1,3);
+        individuos[13] = new Individuo(3,2);
+        individuos[14] = new Individuo(5,3);
+        individuos[15] = new Individuo(1,2);
+        individuos[16] = new Individuo(4,3);
+        individuos[17] = new Individuo(5,2);
+        individuos[18] = new Individuo(3,4);
+        individuos[19] = new Individuo(5,1);
+         */
 
         double r = 0;
         double aptitudT = 0;
